@@ -24,7 +24,7 @@ function Home() {
           }}
         >
           <div className="hero-image-wrapper" style={{ textAlign: 'center' }}>
-             <img src="/코믹스풍.png" alt="해설아 코믹스풍" className="hero-image" style={{
+             <img src="/haeseola-homepage/public/코믹스풍.png" alt="해설아 코믹스풍" className="hero-image" style={{
       width: '220px',
       display: 'block',
       margin: '0 auto'}}/>
@@ -49,7 +49,7 @@ function Home() {
 
       {/* About Section */}
       <section className="about-section" style={{ marginTop: '0.5rem' }}>
-        <img src="/모에1.png" alt="해설아 모에1" className="about-image" />
+        <img src="/haeseola-homepage/public/모에1.png" alt="해설아 모에1" className="about-image" />
         <div className="about-text-content">
           <div className="about-desc">
             안녕하세요! 해설아입니다👋{'\n'}종합 게임 & 저챗 유튜버입니다. {'\n'} 오버워치와 스타크래프트부터 {'\n'}  여행 썰방, 역사 탐구까지 합니다! {'\n'}(팬 애칭: 온님 / 오누이)
