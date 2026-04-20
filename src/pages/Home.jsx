@@ -9,10 +9,10 @@ function Home() {
       
       {/* Hero Section */}
       <section className="hero-section" style={{
-    paddingTop: '0',
-    paddingBottom: '2rem',
-    marginTop: '0'
-  }}>
+        paddingTop: '0',
+        paddingBottom: '2rem',
+        marginTop: '0'
+      }}>
         <div className="hero-content"
           style={{
           display: 'flex',
@@ -24,7 +24,8 @@ function Home() {
           }}
         >
           <div className="hero-image-wrapper" style={{ textAlign: 'center' }}>
-             <img src="/haeseola-homepage/public/코믹스풍.png" alt="해설아 코믹스풍" className="hero-image" style={{
+             {/* 💡 경로 수정: /를 지우거나 ./를 추가하세요 */}
+             <img src="코믹스풍.png" alt="해설아 코믹스풍" className="hero-image" style={{
       width: '220px',
       display: 'block',
       margin: '0 auto'}}/>
@@ -49,7 +50,8 @@ function Home() {
 
       {/* About Section */}
       <section className="about-section" style={{ marginTop: '0.5rem' }}>
-        <img src="/haeseola-homepage/public/모에1.png" alt="해설아 모에1" className="about-image" />
+        {/* 💡 경로 수정: /를 지웠습니다 */}
+        <img src="모에1.png" alt="해설아 모에1" className="about-image" />
         <div className="about-text-content">
           <div className="about-desc">
             안녕하세요! 해설아입니다👋{'\n'}종합 게임 & 저챗 유튜버입니다. {'\n'} 오버워치와 스타크래프트부터 {'\n'}  여행 썰방, 역사 탐구까지 합니다! {'\n'}(팬 애칭: 온님 / 오누이)
@@ -69,12 +71,13 @@ function Home() {
       </section>
 
       <section>
-        <h2 className="section-title">💘설아가 온님에게💘</h2>
+        {/* 💡 "설아" 보다는 전체 이름인 "해설아"로 통일하는 것이 브랜딩에 더 좋을 것 같아요! */}
+        <h2 className="section-title">💘해설아가 온님에게💘</h2>
         <MessageFeed />
       </section>
 
       <section>
-        <h2 className="section-title">설아 유뚜브</h2>
+        <h2 className="section-title">해설아 유튜브</h2>
         <YouTubeGallery />
       </section>
     </div>
