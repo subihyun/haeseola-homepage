@@ -77,6 +77,11 @@ function Home() {
       </section>
 
       <section>
+      </section>
+
+
+      
+      <section>
         <h2 className="section-title">해설아 유튜브</h2>
         <YouTubeGallery />
       </section>
