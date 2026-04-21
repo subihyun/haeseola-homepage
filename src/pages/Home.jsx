@@ -78,6 +78,8 @@ function Home() {
       </section>
 
       <section>
+        <h2 className="section-title">💌 설아에게 메시지 보내기</h2>
+        <FanMessageForm />
       </section>
 
 
