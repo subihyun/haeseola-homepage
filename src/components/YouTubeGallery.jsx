@@ -10,16 +10,16 @@ function YouTubeGallery() {
     const fetchVideos = async () => {
       try {
         const CHANNEL_ID = "UCAGeAW20MJMXIXWPNLvr0cQ";
-        // 올려주신 숏츠 재생목록 ID 적용 완료!
         const SHORTS_PLAYLIST_ID = "PLBkqMGLkQdlyv4maUKlLaU9GIVA0eJCwt";
 
-        // 1. 채널 전체 RSS (최신 영상 섞여있음)
+        // 1. 채널 전체 RSS
         const channelRssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
-        // 2. 숏츠 재생목록 RSS (최신 숏츠만 있음)
+        // 2. 숏츠 재생목록 RSS
         const shortsRssUrl = `https://www.youtube.com/feeds/videos.xml?playlist_id=${SHORTS_PLAYLIST_ID}`;
 
-        const fetchChannel = fetch(`https://corsproxy.io/?${encodeURIComponent(channelRssUrl)}`);
-        const fetchShorts = fetch(`https://corsproxy.io/?${encodeURIComponent(shortsRssUrl)}`);
+        // 🔥 차단된 corsproxy.io 대신 안정적인 api.codetabs.com 프록시로 교체!
+        const fetchChannel = fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(channelRssUrl)}`);
+        const fetchShorts = fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(shortsRssUrl)}`);
 
         // 두 데이터를 동시에 불러옵니다.
         const [channelRes, shortsRes] = await Promise.all([fetchChannel, fetchShorts]);
@@ -59,20 +59,17 @@ function YouTubeGallery() {
         const channelVideos = extractVideos(channelXmlText);
         const shortsVideos = extractVideos(shortsXmlText);
 
-        // 숏츠 영상들의 ID만 모아둔 목록을 만듭니다.
+        // 숏츠 영상들의 ID만 모아둔 목록
         const shortsIdList = shortsVideos.map(video => video.id);
 
         // 분류 작업 시작
         const finalVods = [];
         const finalShorts = [];
 
-        // 채널 전체 영상을 하나씩 돌면서 검사
         channelVideos.forEach(video => {
           if (shortsIdList.includes(video.id)) {
-            // 숏츠 ID 목록에 있으면 숏츠 배열로
             finalShorts.push(video);
           } else {
-            // 숏츠 ID 목록에 없으면 VOD 배열로
             finalVods.push(video);
           }
         });
