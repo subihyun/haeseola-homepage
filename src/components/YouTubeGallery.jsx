@@ -11,7 +11,7 @@ function YouTubeGallery() {
       try {
         const channelId = 'UCAGeAW20MJMXIXWPNLvr0cQ';
         const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
-        const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(rssUrl)}`;
+        const proxyUrl = `https://cors-anywhere.herokuapp.com/${rssUrl}`;
         
         const response = await fetch(proxyUrl);
         if (!response.ok) throw new Error('피드를 불러오는데 실패했습니다.');
