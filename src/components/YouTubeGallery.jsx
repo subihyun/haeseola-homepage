@@ -9,65 +9,78 @@ function YouTubeGallery() {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const channelId = "UCAGeAW20MJMXIXWPNLvr0cQ";
-        const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
-        
-        // 🚨 수정됨: AllOrigins 대신 corsproxy.io 사용
-        const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(rssUrl)}`;
+        const CHANNEL_ID = "UCAGeAW20MJMXIXWPNLvr0cQ";
+        // 올려주신 숏츠 재생목록 ID 적용 완료!
+        const SHORTS_PLAYLIST_ID = "PLBkqMGLkQdlyv4maUKlLaU9GIVA0eJCwt";
 
-        const res = await fetch(proxyUrl);
+        // 1. 채널 전체 RSS (최신 영상 섞여있음)
+        const channelRssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
+        // 2. 숏츠 재생목록 RSS (최신 숏츠만 있음)
+        const shortsRssUrl = `https://www.youtube.com/feeds/videos.xml?playlist_id=${SHORTS_PLAYLIST_ID}`;
 
-        if (!res.ok) {
+        const fetchChannel = fetch(`https://corsproxy.io/?${encodeURIComponent(channelRssUrl)}`);
+        const fetchShorts = fetch(`https://corsproxy.io/?${encodeURIComponent(shortsRssUrl)}`);
+
+        // 두 데이터를 동시에 불러옵니다.
+        const [channelRes, shortsRes] = await Promise.all([fetchChannel, fetchShorts]);
+
+        if (!channelRes.ok || !shortsRes.ok) {
           throw new Error("네트워크 응답이 실패했습니다.");
         }
 
-        // 🚨 수정됨: JSON이 아닌 원본 XML 텍스트를 바로 가져옴
-        const xmlText = await res.text();
+        const channelXmlText = await channelRes.text();
+        const shortsXmlText = await shortsRes.text();
 
-        // XML 데이터 파싱
         const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(xmlText, "text/xml");
-        const entries = xmlDoc.querySelectorAll("entry");
 
-        if (entries.length === 0) {
-          throw new Error("유튜브 데이터 없음");
-        }
+        // XML에서 영상 목록을 뽑아내는 함수
+        const extractVideos = (xmlText) => {
+          const xmlDoc = parser.parseFromString(xmlText, "text/xml");
+          const entries = xmlDoc.querySelectorAll("entry");
+          const arr = [];
 
-        const shortsArr = [];
-        const vodsArr = [];
+          Array.from(entries).forEach((entry) => {
+            const videoId = entry.querySelector("yt\\:videoId").textContent;
+            const title = entry.querySelector("title").textContent;
+            const date = new Date(entry.querySelector("published").textContent).toLocaleDateString();
+            const link = `https://www.youtube.com/watch?v=${videoId}`;
+            
+            const mediaGroup = entry.getElementsByTagName("media:group")[0];
+            const thumbnail = mediaGroup 
+              ? mediaGroup.getElementsByTagName("media:thumbnail")[0].getAttribute("url") 
+              : '';
 
-        Array.from(entries).forEach((entry) => {
-          const videoId = entry.querySelector("yt\\:videoId").textContent;
-          const title = entry.querySelector("title").textContent;
-          const date = new Date(entry.querySelector("published").textContent).toLocaleDateString();
-          const link = `https://www.youtube.com/watch?v=${videoId}`;
-          
-          // 썸네일 추출
-          const mediaGroup = entry.getElementsByTagName("media:group")[0];
-          const thumbnail = mediaGroup 
-            ? mediaGroup.getElementsByTagName("media:thumbnail")[0].getAttribute("url") 
-            : '';
+            arr.push({ id: videoId, title, thumbnail, date, link });
+          });
+          return arr;
+        };
 
-          // 숏츠 판별 로직
-          const isShort =
-            title.toLowerCase().includes("short") ||
-            title.includes("#쇼츠") ||
-            title.includes("#shorts");
+        // 데이터 추출
+        const channelVideos = extractVideos(channelXmlText);
+        const shortsVideos = extractVideos(shortsXmlText);
 
-          const videoData = {
-            id: videoId,
-            title,
-            thumbnail,
-            date,
-            link,
-          };
+        // 숏츠 영상들의 ID만 모아둔 목록을 만듭니다.
+        const shortsIdList = shortsVideos.map(video => video.id);
 
-          if (isShort) shortsArr.push(videoData);
-          else vodsArr.push(videoData);
+        // 분류 작업 시작
+        const finalVods = [];
+        const finalShorts = [];
+
+        // 채널 전체 영상을 하나씩 돌면서 검사
+        channelVideos.forEach(video => {
+          if (shortsIdList.includes(video.id)) {
+            // 숏츠 ID 목록에 있으면 숏츠 배열로
+            finalShorts.push(video);
+          } else {
+            // 숏츠 ID 목록에 없으면 VOD 배열로
+            finalVods.push(video);
+          }
         });
 
-        setShorts(shortsArr);
-        setVods(vodsArr);
+        // 화면에 적용
+        setShorts(finalShorts);
+        setVods(finalVods);
+
       } catch (err) {
         console.error("RSS 피드 파싱 에러:", err);
         setError("영상 불러오기 실패");
@@ -128,7 +141,7 @@ function YouTubeGallery() {
           </h3>
 
           {vods.map((vod) => (
-            <a key={vod.id} href={vod.link} target="_blank" rel="noreferrer">
+             <a key={vod.id} href={vod.link} target="_blank" rel="noreferrer">
               <div style={{ marginBottom: '1rem' }}>
                 <img
                   src={vod.thumbnail}
