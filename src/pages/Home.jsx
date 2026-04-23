@@ -47,6 +47,12 @@ function Home() {
               <a href="https://discord.gg/DbFk8ajrbu" target="_blank" rel="noreferrer" className="btn btn-primary" style={{ padding: '0.6rem 1rem', fontSize: '0.85rem', backgroundColor: '#5865F2' }}>
                 💬 Discord
               </a>
+              <a href="https://cafe.naver.com/haeseola" target="_blank" rel="noreferrer" className="btn btn-primary" style={{ padding: '0.6rem 1rem', fontSize: '0.85rem', backgroundColor: '#03C75A' }}>
+                ☕ 팬카페
+              </a>
+              <a href="https://www.instagram.com/haeseola" target="_blank" rel="noreferrer" className="btn btn-primary" style={{ padding: '0.6rem 1rem', fontSize: '0.85rem', backgroundColor: '#E1306C' }}>
+                📷 Instagram
+              </a>
             </div>
           </div>
         </div>
