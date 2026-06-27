@@ -43,7 +43,7 @@ function Home() {
               <a href="https://chzzk.naver.com/501e7d7f6c739901b845d7b9320e54b4" target="_blank" rel="noreferrer" className="btn btn-primary" style={{ padding: '0.5rem 0.7rem', fontSize: '0.78rem', backgroundColor: '#00FFA3', color: '#000' }}>
                 ⚡ CHZZK
               </a>
-              <a href="https://discord.gg/DbFk8ajrbu" target="_blank" rel="noreferrer" className="btn btn-primary" style={{ padding: '0.5rem 0.7rem', fontSize: '0.78rem', backgroundColor: '#5865F2' }}>
+              <a href="https://discord.gg/KGqz4c9XZF" target="_blank" rel="noreferrer" className="btn btn-primary" style={{ padding: '0.5rem 0.7rem', fontSize: '0.78rem', backgroundColor: '#5865F2' }}>
                 💬 Discord
               </a>
               <a href="https://cafe.naver.com/haeseola" target="_blank" rel="noreferrer" className="btn btn-primary" style={{ padding: '0.5rem 0.7rem', fontSize: '0.78rem', backgroundColor: '#03C75A' }}>
